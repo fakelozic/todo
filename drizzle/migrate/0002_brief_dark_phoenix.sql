@@ -1,1 +1,0 @@
-ALTER TABLE "todo" RENAME COLUMN "tast" TO "task";
