@@ -8,7 +8,7 @@ export default function SignIn() {
     <div className="h-96 flex items-center justify-center px-4">
       <div className="w-full max-w-sm shadow-xl rounded-2xl p-6 text-center">
         <h1 className="text-3xl font-semibold mb-2 text-gray-900">
-          Welcome to JOBS
+          Welcome to ToDo
         </h1>
         <p className="text-gray-600">
           Sign in to post or apply jobs for opportunities
