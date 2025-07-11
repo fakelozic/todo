@@ -1,21 +1,35 @@
 import DeleteTaskForm from "@/src/components/DeleteTaskForm";
 import { Button } from "@/src/components/ui/button";
 import { db } from "@/drizzle";
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 import Link from "next/link";
 import { todos } from "@/drizzle/db/schema";
+import { redirect } from "next/navigation";
+import { auth } from "@/auth";
 
 export default async function TaskPage({
   params,
 }: {
   params: Promise<{ taskID: string }>;
 }) {
+  const session = await auth();
+  if (!session?.user) {
+    return redirect("/sign-in");
+  }
+  const userId = session.user.id;
+
+  if (!userId) {
+    // Or handle the error in a way that makes sense for your application
+    throw new Error("User ID is required to fetch a todo.");
+  }
+
   const { taskID } = await params;
   const taskID_num = parseInt(taskID, 10);
+
   const result = await db
     .select()
     .from(todos)
-    .where(eq(todos.id, taskID_num))
+    .where(and(eq(todos.id, taskID_num), eq(todos.userId, userId)))
     .limit(1);
   const task = result[0];
   return (
