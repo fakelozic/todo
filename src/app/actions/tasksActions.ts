@@ -3,6 +3,8 @@
 import { todos } from "@/drizzle/db/schema";
 import { db } from "@/drizzle";
 import { auth } from "@/auth";
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 export async function createTask(formData: FormData) {
   const session = await auth();
@@ -22,4 +24,6 @@ export async function createTask(formData: FormData) {
     status: status as "OnPaper" | "InProgress" | "Done",
     userId,
   });
+  revalidatePath("/tasks");
+  redirect("/tasks");
 }
